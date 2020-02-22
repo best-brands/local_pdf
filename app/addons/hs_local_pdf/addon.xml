@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<addon scheme="2.0">
+    <id>hs_local_pdf</id>
+    <name>[HSDev] - Local Pdf Generation</name>
+    <description>Because CS-Cart's developers don't understand why people don't like sending their data to Russia</description>
+    <version>1.0.0</version>
+    <priority>2400</priority>
+    <position>0</position>
+    <status>active</status>
+    <supplier>HSDev</supplier>
+    <default_language>en</default_language>
+    <authors>
+        <author>
+            <name>HSDev</name>
+            <email>harmsmitsdev@gmail.com</email>
+            <phone>+31625500655</phone>
+        </author>
+    </authors>
+</addon>
