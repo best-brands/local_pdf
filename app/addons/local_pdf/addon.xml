@@ -11,6 +11,10 @@
     <supplier_link>https://github.com/best-brands</supplier_link>
     <default_language>en</default_language>
 	
+	<autoload>
+        <psr4 prefix="Tygh\">Tygh</psr4>
+    </autoload>
+	
     <authors>
         <author>
             <name>Harm Smits</name>
