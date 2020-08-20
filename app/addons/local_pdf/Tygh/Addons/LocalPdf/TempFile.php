@@ -1,10 +1,4 @@
 <?php
-/**********************************************************************************************************************
- * Any components or design related choices are copyright protected under international law. They are proprietary     *
- * code from Harm Smits and shall not be obtained, used or distributed without explicit permission from Harm Smits.   *
- * I grant you a non-commercial license via github when you download the product. Commercial licenses can be obtained *
- * by contacting me. For any legal inquiries, please contact me at <harmsmitsdev@gmail.com>                           *
- **********************************************************************************************************************/
 
 namespace Tygh\Addons\LocalPdf;
 
@@ -13,7 +7,7 @@ namespace Tygh\Addons\LocalPdf;
  *
  * A convenience class for temporary files.
  *
- * @author Michael Härtl <haertl.mike@gmail.com>
+ * @author  Michael Härtl <haertl.mike@gmail.com>
  * @version 1.1.0
  * @license http://www.opensource.org/licenses/MIT
  */
@@ -33,22 +27,22 @@ class TempFile
     /**
      * Constructor
      *
-     * @param string $content the tmp file content
-     * @param string|null $suffix the optional suffix for the tmp file
-     * @param string|null $prefix the optional prefix for the tmp file. If null 'php_tmpfile_' is used.
+     * @param string      $content   the tmp file content
+     * @param string|null $suffix    the optional suffix for the tmp file
+     * @param string|null $prefix    the optional prefix for the tmp file. If null 'php_tmpfile_' is used.
      * @param string|null $directory directory where the file should be created. Autodetected if not provided.
      */
     public function __construct($content, $suffix = null, $prefix = null, $directory = null)
     {
-        if ($directory===null) {
+        if ($directory === null) {
             $directory = self::getTempDir();
         }
-        if ($prefix===null) {
+        if ($prefix === null) {
             $prefix = 'php_tmpfile_';
         }
-        $this->_fileName = tempnam($directory,$prefix);
-        if ($suffix!==null) {
-            $newName = $this->_fileName.$suffix;
+        $this->_fileName = tempnam($directory, $prefix);
+        if ($suffix !== null) {
+            $newName = $this->_fileName . $suffix;
             rename($this->_fileName, $newName);
             $this->_fileName = $newName;
         }
@@ -68,23 +62,23 @@ class TempFile
     /**
      * Send tmp file to client, either inline or as download
      *
-     * @param string|null $filename the filename to send. If empty, the file is streamed inline.
-     * @param string $contentType the Content-Type header
-     * @param bool $inline whether to force inline display of the file, even if filename is present.
+     * @param string|null $filename    the filename to send. If empty, the file is streamed inline.
+     * @param string      $contentType the Content-Type header
+     * @param bool        $inline      whether to force inline display of the file, even if filename is present.
      */
     public function send($filename = null, $contentType, $inline = false)
     {
         header('Pragma: public');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Content-Type: '.$contentType);
+        header('Content-Type: ' . $contentType);
         header('Content-Transfer-Encoding: binary');
         // #84: Content-Length leads to "network connection was lost" on iOS
         $isIOS = preg_match('/i(phone|pad|pod)/i', $_SERVER['HTTP_USER_AGENT']);
         if (!$isIOS) {
-            header('Content-Length: '.filesize($this->_fileName));
+            header('Content-Length: ' . filesize($this->_fileName));
         }
-        if ($filename!==null || $inline) {
+        if ($filename !== null || $inline) {
             $disposition = $inline ? 'inline' : 'attachment';
             header("Content-Disposition: $disposition; filename=\"$filename\"");
         }
@@ -93,6 +87,7 @@ class TempFile
 
     /**
      * @param string $name the name to save the file as
+     *
      * @return bool whether the file could be saved
      */
     public function saveAs($name)
@@ -115,7 +110,7 @@ class TempFile
     {
         if (function_exists('sys_get_temp_dir')) {
             return sys_get_temp_dir();
-        } elseif ( ($tmp = getenv('TMP')) || ($tmp = getenv('TEMP')) || ($tmp = getenv('TMPDIR')) ) {
+        } else if (($tmp = getenv('TMP')) || ($tmp = getenv('TEMP')) || ($tmp = getenv('TMPDIR'))) {
             return realpath($tmp);
         } else {
             return '/tmp';

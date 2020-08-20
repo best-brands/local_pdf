@@ -1,10 +1,4 @@
 <?php
-/**********************************************************************************************************************
- * Any components or design related choices are copyright protected under international law. They are proprietary     *
- * code from Harm Smits and shall not be obtained, used or distributed without explicit permission from Harm Smits.   *
- * I grant you a non-commercial license via github when you download the product. Commercial licenses can be obtained *
- * by contacting me. For any legal inquiries, please contact me at <harmsmitsdev@gmail.com>                           *
- **********************************************************************************************************************/
 
 namespace Tygh\Addons\LocalPdf;
 
@@ -15,7 +9,7 @@ use Tygh\Addons\LocalPdf\TempFile as File;
  *
  * This class is a slim wrapper around `wkhtmltoimage`.
  *
- * @author Michael Härtl <haertl.mike@gmail.com>
+ * @author  Michael Härtl <haertl.mike@gmail.com>
  * @license http://www.opensource.org/licenses/MIT
  */
 class Image
@@ -89,13 +83,13 @@ class Image
 
     /**
      * @param array|string $options global options for wkhtmltoimage, a page
-     * URL, a HTML string or a filename
+     *                              URL, a HTML string or a filename
      */
     public function __construct($options = null)
     {
         if (is_array($options)) {
             $this->setOptions($options);
-        } elseif (is_string($options)) {
+        } else if (is_string($options)) {
             $this->setPage($options);
         }
     }
@@ -104,6 +98,7 @@ class Image
      * Add a page object to the output
      *
      * @param string $page either a URL, a HTML string or a filename
+     *
      * @return static the Image instance for method chaining
      */
     public function setPage($page)
@@ -116,6 +111,7 @@ class Image
      * Save the image to given filename (triggers image creation)
      *
      * @param string $filename to save image as
+     *
      * @return bool whether image was created successfully
      */
     public function saveAs($filename)
@@ -136,14 +132,15 @@ class Image
      * creation)
      *
      * @param string|null $filename the filename to send. If empty, the PDF is
-     * streamed inline. Note, that the file extension must match what you
-     * configured as $type (png, jpg, ...).
-     * @param bool $inline whether to force inline display of the image, even
-     * if filename is present.
+     *                              streamed inline. Note, that the file extension must match what you
+     *                              configured as $type (png, jpg, ...).
+     * @param bool        $inline   whether to force inline display of the image, even
+     *                              if filename is present.
+     *
      * @return bool whether image was created successfully
      * @throws \Exception
      */
-    public function send($filename = null,$inline = false)
+    public function send($filename = null, $inline = false)
     {
         if (!$this->_isCreated && !$this->createImage()) {
             return false;
@@ -154,6 +151,7 @@ class Image
 
     /**
      * Get the raw Image contents (triggers Image creation).
+     *
      * @return string|bool The Image content as a string or `false` if the
      * Image wasn't created successfully.
      */
@@ -169,6 +167,7 @@ class Image
      * Set options
      *
      * @param array $options list of image options to set as name/value pairs
+     *
      * @return static the Image instance for method chaining
      */
     public function setOptions($options = array())
@@ -176,7 +175,7 @@ class Image
         foreach ($options as $key => $val) {
             if (is_int($key)) {
                 $this->_options[] = $val;
-            } elseif ($key[0]!=='_' && property_exists($this, $key)) {
+            } else if ($key[0] !== '_' && property_exists($this, $key)) {
                 $this->$key = $val;
             } else {
                 $this->_options[$key] = $val;
@@ -214,7 +213,7 @@ class Image
     public function getImageFilename()
     {
         if ($this->_tmpImageFile === null) {
-            $this->_tmpImageFile = new File('', '.'.$this->type, self::TMP_PREFIX);
+            $this->_tmpImageFile = new File('', '.' . $this->type, self::TMP_PREFIX);
         }
         return $this->_tmpImageFile->getFileName();
     }
@@ -227,9 +226,9 @@ class Image
     {
         if ($this->type === 'jpg') {
             return 'image/jpeg';
-        } elseif ($this->type === 'png') {
+        } else if ($this->type === 'png') {
             return 'image/png';
-        } elseif ($this->type === 'bmp') {
+        } else if ($this->type === 'bmp') {
             return 'image/bmp';
         } else {
             throw new \Exception('Invalid image type');
@@ -250,11 +249,11 @@ class Image
         $fileName = $this->getImageFilename();
         $command->addArgs($this->_options);
         // Always escape input and output filename
-        $command->addArg((string) $this->_page, null, true);
+        $command->addArg((string)$this->_page, null, true);
         $command->addArg($fileName, null, true);
         if (!$command->execute()) {
             $this->_error = $command->getError();
-            if (!(file_exists($fileName) && filesize($fileName)!==0 && $this->ignoreWarnings)) {
+            if (!(file_exists($fileName) && filesize($fileName) !== 0 && $this->ignoreWarnings)) {
                 return false;
             }
         }

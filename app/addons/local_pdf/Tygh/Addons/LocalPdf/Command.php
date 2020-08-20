@@ -1,10 +1,4 @@
 <?php
-/**********************************************************************************************************************
- * Any components or design related choices are copyright protected under international law. They are proprietary     *
- * code from Harm Smits and shall not be obtained, used or distributed without explicit permission from Harm Smits.   *
- * I grant you a non-commercial license via github when you download the product. Commercial licenses can be obtained *
- * by contacting me. For any legal inquiries, please contact me at <harmsmitsdev@gmail.com>                           *
- **********************************************************************************************************************/
 
 namespace Tygh\Addons\LocalPdf;
 
@@ -20,7 +14,7 @@ if (!defined('BOOTSTRAP')) {
  * This class is an extension of \Tygh\Addons\LocalPdf\ShellCommand and adds `wk*`
  * specific features like xvfb support and proper argument handling.
  *
- * @author Michael Härtl <haertl.mike@gmail.com>
+ * @author  Michael Härtl <haertl.mike@gmail.com>
  * @license http://www.opensource.org/licenses/MIT
  */
 class Command extends BaseCommand
@@ -44,10 +38,10 @@ class Command extends BaseCommand
 
     /**
      * @param array $args args to add to the command. These can be:
-     * ```
-     * [
-     *   // Special argument 'input' will not get prepended with '--'.
-     *   'input' => 'cover',
+     *                    ```
+     *                    [
+     *                    // Special argument 'input' will not get prepended with '--'.
+     *                    'input' => 'cover',
      *
      *   // Special argument 'inputArg' is treated like 'input' but will get escaped
      *   // Both 'input' and 'inputArg' can be used in combination
@@ -77,19 +71,19 @@ class Command extends BaseCommand
     {
         if (isset($args['input'])) {
             // Typecasts TmpFile to filename
-            $this->addArg((string) $args['input']);
+            $this->addArg((string)$args['input']);
             unset($args['input']);
         }
         if (isset($args['inputArg'])) {
             // Typecasts TmpFile to filename and escapes argument
-            $this->addArg((string) $args['inputArg'], null, true);
+            $this->addArg((string)$args['inputArg'], null, true);
             unset($args['inputArg']);
         }
-        foreach($args as $key => $val) {
+        foreach ($args as $key => $val) {
             if (is_numeric($key)) {
                 $this->addArg("--$val");
-            } elseif (is_array($val)) {
-                foreach($val as $vkey => $vval) {
+            } else if (is_array($val)) {
+                foreach ($val as $vkey => $vval) {
                     if (is_int($vkey)) {
                         $this->addArg("--$key", $vval);
                     } else {
@@ -110,7 +104,7 @@ class Command extends BaseCommand
     {
         $command = parent::getExecCommand();
         if ($this->enableXvfb) {
-            return $this->xvfbRunBinary.' '.$this->xvfbRunOptions.' '.$command;
+            return $this->xvfbRunBinary . ' ' . $this->xvfbRunOptions . ' ' . $command;
         }
         return $command;
     }

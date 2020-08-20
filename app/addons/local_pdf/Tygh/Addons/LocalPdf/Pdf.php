@@ -1,10 +1,4 @@
 <?php
-/**********************************************************************************************************************
- * Any components or design related choices are copyright protected under international law. They are proprietary     *
- * code from Harm Smits and shall not be obtained, used or distributed without explicit permission from Harm Smits.   *
- * I grant you a non-commercial license via github when you download the product. Commercial licenses can be obtained *
- * by contacting me. For any legal inquiries, please contact me at <harmsmitsdev@gmail.com>                           *
- **********************************************************************************************************************/
 
 namespace Tygh\Addons\LocalPdf;
 
@@ -15,7 +9,7 @@ use Tygh\Addons\LocalPdf\TempFile as File;
  *
  * This class is a slim wrapper around wkhtmltopdf.
  *
- * @author Michael Härtl <haertl.mike@gmail.com>
+ * @author  Michael Härtl <haertl.mike@gmail.com>
  * @license http://www.opensource.org/licenses/MIT
  */
 class Pdf
@@ -107,7 +101,7 @@ class Pdf
 
     /**
      * @param array|string $options global options for wkhtmltopdf, a page URL,
-     * a HTML string or a filename
+     *                              a HTML string or a filename
      */
     public function __construct($options = null)
     {
@@ -121,11 +115,12 @@ class Pdf
     /**
      * Add a page object to the output
      *
-     * @param string $input either a URL, a HTML string or a filename
-     * @param array $options optional options for this page
-     * @param string|null $type a type hint if the input is a string of known
-     * type. This can either be `TYPE_HTML` or `TYPE_XML`. If `null` (default)
-     * the type is auto detected from the string content.
+     * @param string      $input   either a URL, a HTML string or a filename
+     * @param array       $options optional options for this page
+     * @param string|null $type    a type hint if the input is a string of known
+     *                             type. This can either be `TYPE_HTML` or `TYPE_XML`. If `null` (default)
+     *                             the type is auto detected from the string content.
+     *
      * @return static the Pdf instance for method chaining
      */
     public function addPage($input, $options = array(), $type = null)
@@ -138,16 +133,17 @@ class Pdf
     /**
      * Add a cover page object to the output
      *
-     * @param string $input either a URL, a HTML string or a filename
-     * @param array $options optional options for the cover page
-     * @param string|null $type a type hint if the input is a string of known
-     * type. This can either be `TYPE_HTML` or `TYPE_XML`. If `null` (default)
-     * the type is auto detected from the string content.
+     * @param string      $input   either a URL, a HTML string or a filename
+     * @param array       $options optional options for the cover page
+     * @param string|null $type    a type hint if the input is a string of known
+     *                             type. This can either be `TYPE_HTML` or `TYPE_XML`. If `null` (default)
+     *                             the type is auto detected from the string content.
+     *
      * @return static the Pdf instance for method chaining
      */
     public function addCover($input, $options = array(), $type = null)
     {
-        $options['input'] = ($this->version9 ? '--' : '').'cover';
+        $options['input'] = ($this->version9 ? '--' : '') . 'cover';
         $options['inputArg'] = $this->processInput($input, $type);
         $this->_objects[] = $this->processOptions($options);
         return $this;
@@ -157,11 +153,12 @@ class Pdf
      * Add a TOC object to the output
      *
      * @param array $options optional options for the table of contents
+     *
      * @return static the Pdf instance for method chaining
      */
     public function addToc($options = array())
     {
-        $options['input'] = ($this->version9 ? '--' : '')."toc";
+        $options['input'] = ($this->version9 ? '--' : '') . "toc";
         $this->_objects[] = $this->processOptions($options);
         return $this;
     }
@@ -170,6 +167,7 @@ class Pdf
      * Save the PDF to given filename (triggers PDF creation)
      *
      * @param string $filename to save PDF as
+     *
      * @return bool whether PDF was created successfully
      */
     public function saveAs($filename)
@@ -188,12 +186,13 @@ class Pdf
      * Send PDF to client, either inline or as download (triggers PDF creation)
      *
      * @param string|null $filename the filename to send. If empty, the PDF is
-     * streamed inline.
-     * @param bool $inline whether to force inline display of the PDF, even if
-     * filename is present.
+     *                              streamed inline.
+     * @param bool        $inline   whether to force inline display of the PDF, even if
+     *                              filename is present.
+     *
      * @return bool whether PDF was created successfully
      */
-    public function send($filename = null,$inline = false)
+    public function send($filename = null, $inline = false)
     {
         if (!$this->_isCreated && !$this->createPdf()) {
             return false;
@@ -204,6 +203,7 @@ class Pdf
 
     /**
      * Get the raw PDF contents (triggers PDF creation).
+     *
      * @return string|bool The PDF content as a string or `false` if the PDF
      * wasn't created successfully.
      */
@@ -219,6 +219,7 @@ class Pdf
      * Set global option(s)
      *
      * @param array $options list of global PDF options to set as name/value pairs
+     *
      * @return static the Pdf instance for method chaining
      */
     public function setOptions($options = array())
@@ -232,7 +233,7 @@ class Pdf
         foreach ($options as $key => $val) {
             if (is_int($key)) {
                 $this->_options[] = $val;
-            } elseif ($key[0]!=='_' && property_exists($this, $key)) {
+            } else if ($key[0] !== '_' && property_exists($this, $key)) {
                 $this->$key = $val;
             } else {
                 $this->_options[$key] = $val;
@@ -294,7 +295,7 @@ class Pdf
         $command->addArg($fileName, null, true);    // Always escape filename
         if (!$command->execute()) {
             $this->_error = $command->getError();
-            if (!(file_exists($fileName) && filesize($fileName)!==0 && $this->ignoreWarnings)) {
+            if (!(file_exists($fileName) && filesize($fileName) !== 0 && $this->ignoreWarnings)) {
                 return false;
             }
         }
@@ -303,16 +304,19 @@ class Pdf
     }
 
     /**
-     * @param string $input
+     * @param string      $input
      * @param string|null $type a type hint if the input is a string of known type. This can either be
-     * `TYPE_HTML` or `TYPE_XML`. If `null` (default) the type is auto detected from the string content.
-     * @return \mikehaertl\tmp\File|string a File object if the input is a HTML or XML string. The unchanged input otherwhise.
+     *                          `TYPE_HTML` or `TYPE_XML`. If `null` (default) the type is auto detected from the
+     *                          string content.
+     *
+     * @return \mikehaertl\tmp\File|string a File object if the input is a HTML or XML string. The unchanged input
+     *                                     otherwhise.
      */
     protected function processInput($input, $type = null)
     {
         if ($type === self::TYPE_HTML || $type === null && preg_match(self::REGEX_HTML, $input)) {
             return $this->_tmpFiles[] = new File($input, '.html', self::TMP_PREFIX, $this->tmpDir);
-        } elseif ($type === self::TYPE_XML || preg_match(self::REGEX_XML, $input)) {
+        } else if ($type === self::TYPE_XML || preg_match(self::REGEX_XML, $input)) {
             return $this->_tmpFiles[] = new File($input, '.xml', self::TMP_PREFIX, $this->tmpDir);
         } else {
             return $input;
@@ -321,16 +325,17 @@ class Pdf
 
     /**
      * @param array $options list of options as name/value pairs
+     *
      * @return array options with raw content converted to tmp files where neccessary
      */
     protected function processOptions($options = array())
     {
         foreach ($options as $key => $val) {
             // Some options expect a URL or a file name, so check if we need a temp file
-            if (is_string($val) && preg_match(self::REGEX_OPTS_TMPFILE, $key) ) {
+            if (is_string($val) && preg_match(self::REGEX_OPTS_TMPFILE, $key)) {
                 defined('PHP_MAXPATHLEN') || define('PHP_MAXPATHLEN', 255);
                 $isFile = (strlen($val) <= PHP_MAXPATHLEN) ? is_file($val) : false;
-                if (!($isFile || preg_match('/^(https?:)?\/\//i',$val) || $val === strip_tags($val))) {
+                if (!($isFile || preg_match('/^(https?:)?\/\//i', $val) || $val === strip_tags($val))) {
                     $options[$key] = new File($val, '.html', self::TMP_PREFIX, $this->tmpDir);
                 }
             }

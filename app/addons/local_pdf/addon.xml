@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
-<addon scheme="2.0">
-    <id>hs_local_pdf</id>
-    <name>[HSDev] - Local Pdf Generation</name>
+<addon scheme="4.0">
+    <id>local_pdf</id>
+    <name>Local pdf generation</name>
     <description>Because CS-Cart's developers don't understand why people don't like sending their data to Russia</description>
     <version>1.0.0</version>
     <priority>2400</priority>
     <position>0</position>
-    <status>active</status>
-    <supplier>HSDev</supplier>
+	<status>active</status>
+    <supplier>Best Brands</supplier>
+    <supplier_link>https://github.com/best-brands</supplier_link>
     <default_language>en</default_language>
+	
     <authors>
         <author>
-            <name>HSDev</name>
-            <email>harmsmitsdev@gmail.com</email>
+            <name>Harm Smits</name>
+            <email>harm@bestbrands.eu</email>
             <phone>+31625500655</phone>
         </author>
     </authors>

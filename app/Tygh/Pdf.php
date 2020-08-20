@@ -31,7 +31,9 @@ class Pdf
 
     /**
      * Pushes HTML code to batch to render PDF later
-     * @param  string  $html HTML code
+     *
+     * @param string $html HTML code
+     *
      * @return boolean true if transaction created, false - otherwise
      */
     public static function batchAdd($html)
@@ -41,12 +43,12 @@ class Pdf
         if (!is_object(self::$pdf_instance)) {
             $default_params = array(
                 'no-outline',
-                'margin-top'    => 0,
-                'margin-right'  => 0,
+                'margin-top' => 0,
+                'margin-right' => 0,
                 'margin-bottom' => 0,
-                'margin-left'   => 0,
-                'page-size'     => 'A4',
-                'encoding'      => 'utf8'
+                'margin-left' => 0,
+                'page-size' => 'A4',
+                'encoding' => 'utf8'
             );
 
             self::$pdf_instance = new PdfGenerator($default_params);
@@ -60,9 +62,10 @@ class Pdf
     /**
      * Renders PDF document by transaction ID
      *
-     * @param  string  $filename filename to save PDF or name of attachment to download
-     * @param  boolean $save     saves to file if true, outputs if not
-     * @param  array   $params   params to post along with request
+     * @param string  $filename filename to save PDF or name of attachment to download
+     * @param boolean $save     saves to file if true, outputs if not
+     * @param array   $params   params to post along with request
+     *
      * @return mixed   true if document saved, false on failure or outputs document
      */
     public static function batchRender($filename = '', $save = false, $params = array())
@@ -81,10 +84,12 @@ class Pdf
 
     /**
      * Render PDF document from HTML code
-     * @param  string  $html     HTML code
-     * @param  string  $filename filename to save PDF or name of attachment to download
-     * @param  boolean $save     saves to file if true, outputs if not
-     * @param  array   $params   params to post along with request
+     *
+     * @param string  $html     HTML code
+     * @param string  $filename filename to save PDF or name of attachment to download
+     * @param boolean $save     saves to file if true, outputs if not
+     * @param array   $params   params to post along with request
+     *
      * @return mixed   true if document saved, false on failure or outputs document
      */
     public static function render($html, $filename = '', $save = false, $params = array())
@@ -99,18 +104,18 @@ class Pdf
 
         $default_params = array(
             'no-outline',
-            'margin-top'    => 0,
-            'margin-right'  => 0,
+            'margin-top' => 0,
+            'margin-right' => 0,
             'margin-bottom' => 0,
-            'margin-left'   => 0,
-            'page-size'     => 'A4',
-            'encoding'      => 'utf8'
+            'margin-left' => 0,
+            'page-size' => 'A4',
+            'encoding' => 'utf8'
         );
 
         $params = array_merge($default_params, $params);
         $file = fn_create_temp_file();
 
-        $pdf = New PdfGenerator($params);
+        $pdf = new PdfGenerator($params);
         $pdf->addPage($html);
 
         if (!$pdf->saveAs($file)) {
@@ -123,7 +128,9 @@ class Pdf
 
     /**
      * Generates service URL
-     * @param  string $action action
+     *
+     * @param string $action action
+     *
      * @return string formed URL
      */
     protected static function action($action)
@@ -133,9 +140,11 @@ class Pdf
 
     /**
      * Saves PDF document or outputs it
-     * @param  string  $file  file with PDF document
-     * @param  string  $filename filename to save PDF or name of attachment to download
-     * @param  boolean $save     saves to file if true, outputs if not
+     *
+     * @param string  $file     file with PDF document
+     * @param string  $filename filename to save PDF or name of attachment to download
+     * @param boolean $save     saves to file if true, outputs if not
+     *
      * @return mixed   true if document saved, false on failure or outputs document
      */
     protected static function output($file, $filename = '', $save = false)
@@ -164,7 +173,9 @@ class Pdf
 
     /**
      * Converts images links to image:data attribute
-     * @param  string $html html code
+     *
+     * @param string $html html code
+     *
      * @return string html code with converted links
      */
     protected static function convertImages($html)
@@ -196,17 +207,17 @@ class Pdf
                 if (strpos($path, '?') === false && strpos($path, '&') === false) {
                     if (($i = strpos($path, $http_location)) !== false) {
                         $real_path = substr_replace($path, Registry::get('config.dir.root'), $i, strlen($http_location));
-                    } elseif (($i = strpos($path, $https_location)) !== false) {
+                    } else if (($i = strpos($path, $https_location)) !== false) {
                         $real_path = substr_replace($path, Registry::get('config.dir.root'), $i, strlen($https_location));
-                    } elseif (!empty($http_path) && ($i = strpos($path, $http_path)) !== false) {
+                    } else if (!empty($http_path) && ($i = strpos($path, $http_path)) !== false) {
                         $real_path = substr_replace($path, Registry::get('config.dir.root'), $i, strlen($http_path));
-                    } elseif (!empty($https_path) && ($i = strpos($path, $https_path)) !== false) {
+                    } else if (!empty($https_path) && ($i = strpos($path, $https_path)) !== false) {
                         $real_path = substr_replace($path, Registry::get('config.dir.root'), $i, strlen($https_path));
                     }
                 }
 
                 if (empty($real_path)) {
-                    $real_path = (strpos($path, '://') === false) ? $http_location .'/'. $path : $path;
+                    $real_path = (strpos($path, '://') === false) ? $http_location . '/' . $path : $path;
                 }
 
                 list($width, $height, $mime_type) = fn_get_image_size($real_path);
@@ -223,7 +234,9 @@ class Pdf
 
     /**
      * Checks if server IP address is local
-     * @param  string  $ip IP address
+     *
+     * @param string $ip IP address
+     *
      * @return boolean true if IP is local, false - if public
      */
     protected static function isLocalIP($ip)
