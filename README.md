@@ -1,4 +1,4 @@
-# hs_local_pdf
+# local_pdf
 
 By default CS-Cart does HTML to PDF conversion on their own servers,
 which in many cases is not feasible because of international laws (as
@@ -16,8 +16,3 @@ and that you have permissions to use the according PHP functions.
 Just download the zip and extract it in the root of your directory. Do
 note that this changes core files so after updates you might have to
 re-upload the addon.
-
-## Contacting me
-
-If any questions arise, please create an issue, or send me an email at
-harmsmitsdev@gmail.com
