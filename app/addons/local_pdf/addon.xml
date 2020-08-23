@@ -6,12 +6,12 @@
     <version>1.0.0</version>
     <priority>2400</priority>
     <position>0</position>
-	<status>active</status>
+    <status>active</status>
     <supplier>Best Brands</supplier>
     <supplier_link>https://github.com/best-brands</supplier_link>
     <default_language>en</default_language>
 	
-	<autoload>
+    <autoload>
         <psr4 prefix="Tygh\">Tygh</psr4>
     </autoload>
 	
